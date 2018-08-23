@@ -5,38 +5,42 @@ var firstImage = document.getElementById('firstImage');
 var secondImage = document.getElementById('secondImage');
 var thirdImage = document.getElementById('thirdImage');
 
+var firstImageLabel = document.getElementById('firstImageLabel');
+var secondImageLabel = document.getElementById('secondImageLabel');
+var thirdImageLabel = document.getElementById('thirdImageLabel');
 // make a place to store potential products to show
 var productList=[];
 
 // constructor for our Product
-function Product(picture){
+function Product(picture, name){
   this.picture=picture;
+  this.name=name;
   this.timesDisplayed=0;
   this.timesSelected=0;
   productList.push(this);
 }
 
 // List of products from our images
-new Product('img/bag.jpg');
-new Product('img/banana.jpg');
-new Product('img/bathroom.jpg');
-new Product('img/boots.jpg');
-new Product('img/breakfast.jpg');
-new Product('img/bubblegum.jpg');
-new Product('img/chair.jpg');
-new Product('img/cthulhu.jpg');
-new Product('img/dog-duck.jpg');
-new Product('img/dragon.jpg');
-new Product('img/pen.jpg');
-new Product('img/pet-sweep.jpg');
-new Product('img/scissors.jpg');
-new Product('img/shark.jpg');
-new Product('img/sweep.png');
-new Product('img/tauntaun.jpg');
-new Product('img/unicorn.jpg');
-new Product('img/usb.gif');
-new Product('img/water-can.jpg');
-new Product('img/wine-glass.jpg');
+new Product('img/bag.jpg', 'bag');
+new Product('img/banana.jpg', 'banana');
+new Product('img/bathroom.jpg', 'bathroom');
+new Product('img/boots.jpg', 'boots');
+new Product('img/breakfast.jpg', 'breakfast');
+new Product('img/bubblegum.jpg', 'bubblegum');
+new Product('img/chair.jpg', 'chair');
+new Product('img/cthulhu.jpg', 'cthulhu');
+new Product('img/dog-duck.jpg', 'dog duck');
+new Product('img/dragon.jpg', 'dragon');
+new Product('img/pen.jpg', 'pen');
+new Product('img/pet-sweep.jpg', 'pet-s');
+new Product('img/scissors.jpg', 'scissors');
+new Product('img/shark.jpg', 'shark');
+new Product('img/sweep.png', 'sweep');
+new Product('img/tauntaun.jpg', 'tauntaun');
+new Product('img/unicorn.jpg', 'unicorn');
+new Product('img/usb.gif', 'usb');
+new Product('img/water-can.jpg', 'water');
+new Product('img/wine-glass.jpg', 'wine-g');
 
 
 // Setup variables so showNewProducts can use them and the click events can too
@@ -51,8 +55,9 @@ function showNewProducts() {
   if(showCount === 25) {
     // re-populate the product list so we can show all the products
     for(var i=0; i < lastProducts.length; i++) {
-      productList.push(lastProducts.shift());
+      productList.push(lastProducts[i]);
     }
+   
     renderResults();
     return;
   }
@@ -79,13 +84,16 @@ function showNewProducts() {
 
   // display our three products on the page
   firstImage.src=firstProduct.picture;
+  firstImageLabel.innerHTML=firstProduct.name;
   firstProduct.timesDisplayed++;
 
   secondImage.src=secondProduct.picture;
+  secondImageLabel.innerHTML=secondProduct.name;
   secondProduct.timesDisplayed++;
 
   thirdImage.src=thirdProduct.picture;
-  thirdProduct.timesDisplayed++;  
+  thirdImageLabel.innerHTML=thirdProduct.name;
+  thirdProduct.timesDisplayed++;
 
   // store the shown products so we can add them back in later
   lastProducts.push(firstProduct);
@@ -115,10 +123,13 @@ thirdImage.addEventListener('click', function() {
 function renderResults() {
   // clear the images being shown
   document.getElementById('images').innerHTML = '';
+  var results = document.getElementById('results');
 
   // log the amount of votes for each product
   for(var i = 0; i < productList.length; i++) {
-    console.log(productList[i].picture + ' was voted on ' + productList[i].timesSelected);
+    var li = document.createElement('li');
+    li.innerHTML = productList[i].timesSelected + ' votes for the ' + productList[i].name;
+    results.appendChild(li);
   }
 }
 

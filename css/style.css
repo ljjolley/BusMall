@@ -1,0 +1,9 @@
+#images li {
+  float: left;
+  margin-right: 20px;
+  text-align: center;
+}
+
+#results {
+  margin: 20px;
+}
