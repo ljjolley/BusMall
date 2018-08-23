@@ -17,9 +17,12 @@ var thirdImage = document.getElementById('thirdImage');
 var firstImageLabel = document.getElementById('firstImageLabel');
 var secondImageLabel = document.getElementById('secondImageLabel');
 var thirdImageLabel = document.getElementById('thirdImageLabel');
+
 // make a place to store potential products to show
+// try and get the json for our products from local storage
 var productList=JSON.parse(window.localStorage.getItem('productList'));
 
+// if it wasn't in local storage, we need to create the product list
 if(productList === null) {
   productList = [];
 
@@ -56,7 +59,9 @@ var showCount = 0;
 var votesUntilShowResults = 25;
 
 function showNewProducts() {
+  // this runs after we tally a vote, so we should persist that product to local storage
   window.localStorage.setItem('productList', JSON.stringify(productList));
+
   // see if the user has voted enough
   if(showCount === votesUntilShowResults) {
     // re-populate the product list so we can show all the products
@@ -127,31 +132,37 @@ thirdImage.addEventListener('click', function() {
 
 
 function renderResults() {
-  // clear the images being shown
+  // this makes sure at the end of a survey we have everything persisted
   window.localStorage.setItem('productList', JSON.stringify(productList));
+
+  // clear all items being shown
   document.getElementById('images').innerHTML = '';
   var results = document.getElementById('results');
 
-  // log the amount of votes for each product
+  // show the amount of votes for each product
   for(var i = 0; i < productList.length; i++) {
     var li = document.createElement('li');
     li.innerHTML = productList[i].timesSelected + ' votes for the ' + productList[i].name;
     results.appendChild(li);
   }
 
+  // render the results chart
   renderChart();
 }
 
 function renderChart() {
+  // get our canvase object from the DOM
   var resultsGraph = document.getElementById('resultsGraph').getContext('2d');
   var chartLabels = [];
   var chartData = [];
 
+  // setup the labels and data from our product list
   for(var i = 0; i < productList.length; i++) {
     chartLabels.push(productList[i].name);
     chartData.push(productList[i].timesSelected);
   }
 
+  // populate the chart object
   new Chart(resultsGraph, {
     // The type of chart we want to create
     type: 'bar',
@@ -168,4 +179,6 @@ function renderChart() {
     },
   });
 }
+
+
 showNewProducts();
