@@ -53,7 +53,7 @@ var showCount = 0;
 
 function showNewProducts() {
   // see if the user has voted enough
-  if(showCount === 2) {
+  if(showCount === 25) {
     // re-populate the product list so we can show all the products
     for(var i=0; i < lastProducts.length; i++) {
       productList.push(lastProducts[i]);
