@@ -1,16 +1,5 @@
 'use strict';
 
-// get the images to update with new products
-var firstImage = document.getElementById('firstImage');
-var secondImage = document.getElementById('secondImage');
-var thirdImage = document.getElementById('thirdImage');
-
-var firstImageLabel = document.getElementById('firstImageLabel');
-var secondImageLabel = document.getElementById('secondImageLabel');
-var thirdImageLabel = document.getElementById('thirdImageLabel');
-// make a place to store potential products to show
-var productList=[];
-
 // constructor for our Product
 function Product(picture, name){
   this.picture=picture;
@@ -20,27 +9,42 @@ function Product(picture, name){
   productList.push(this);
 }
 
-// List of products from our images
-new Product('img/bag.jpg', 'bag');
-new Product('img/banana.jpg', 'banana');
-new Product('img/bathroom.jpg', 'bathroom');
-new Product('img/boots.jpg', 'boots');
-new Product('img/breakfast.jpg', 'breakfast');
-new Product('img/bubblegum.jpg', 'bubblegum');
-new Product('img/chair.jpg', 'chair');
-new Product('img/cthulhu.jpg', 'cthulhu');
-new Product('img/dog-duck.jpg', 'dog duck');
-new Product('img/dragon.jpg', 'dragon');
-new Product('img/pen.jpg', 'pen');
-new Product('img/pet-sweep.jpg', 'pet-s');
-new Product('img/scissors.jpg', 'scissors');
-new Product('img/shark.jpg', 'shark');
-new Product('img/sweep.png', 'sweep');
-new Product('img/tauntaun.jpg', 'tauntaun');
-new Product('img/unicorn.jpg', 'unicorn');
-new Product('img/usb.gif', 'usb');
-new Product('img/water-can.jpg', 'water');
-new Product('img/wine-glass.jpg', 'wine-g');
+// get the images to update with new products
+var firstImage = document.getElementById('firstImage');
+var secondImage = document.getElementById('secondImage');
+var thirdImage = document.getElementById('thirdImage');
+
+var firstImageLabel = document.getElementById('firstImageLabel');
+var secondImageLabel = document.getElementById('secondImageLabel');
+var thirdImageLabel = document.getElementById('thirdImageLabel');
+// make a place to store potential products to show
+var productList=JSON.parse(window.localStorage.getItem('productList'));
+
+if(productList === null) {
+  productList = [];
+
+  // List of products from our images
+  new Product('img/bag.jpg', 'bag');
+  new Product('img/banana.jpg', 'banana');
+  new Product('img/bathroom.jpg', 'bathroom');
+  new Product('img/boots.jpg', 'boots');
+  new Product('img/breakfast.jpg', 'breakfast');
+  new Product('img/bubblegum.jpg', 'bubblegum');
+  new Product('img/chair.jpg', 'chair');
+  new Product('img/cthulhu.jpg', 'cthulhu');
+  new Product('img/dog-duck.jpg', 'dog duck');
+  new Product('img/dragon.jpg', 'dragon');
+  new Product('img/pen.jpg', 'pen');
+  new Product('img/pet-sweep.jpg', 'pet-s');
+  new Product('img/scissors.jpg', 'scissors');
+  new Product('img/shark.jpg', 'shark');
+  new Product('img/sweep.png', 'sweep');
+  new Product('img/tauntaun.jpg', 'tauntaun');
+  new Product('img/unicorn.jpg', 'unicorn');
+  new Product('img/usb.gif', 'usb');
+  new Product('img/water-can.jpg', 'water');
+  new Product('img/wine-glass.jpg', 'wine-g');
+}
 
 
 // Setup variables so showNewProducts can use them and the click events can too
@@ -49,9 +53,10 @@ var firstProduct;
 var secondProduct;
 var thirdProduct;
 var showCount = 0;
-var votesUntilShowResults = 25;
+var votesUntilShowResults = 2;
 
 function showNewProducts() {
+  window.localStorage.setItem('productList', JSON.stringify(productList));
   // see if the user has voted enough
   if(showCount === votesUntilShowResults) {
     // re-populate the product list so we can show all the products
@@ -123,6 +128,7 @@ thirdImage.addEventListener('click', function() {
 
 function renderResults() {
   // clear the images being shown
+  window.localStorage.setItem('productList', JSON.stringify(productList));
   document.getElementById('images').innerHTML = '';
   var results = document.getElementById('results');
 
