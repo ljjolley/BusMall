@@ -1,14 +1,5 @@
 'use strict';
 
-// constructor for our Product
-function Product(picture, name){
-  this.picture=picture;
-  this.name=name;
-  this.timesDisplayed=0;
-  this.timesSelected=0;
-  productList.push(this);
-}
-
 // get the images to update with new products
 var firstImage = document.getElementById('firstImage');
 var secondImage = document.getElementById('secondImage');
@@ -17,6 +8,15 @@ var thirdImage = document.getElementById('thirdImage');
 var firstImageLabel = document.getElementById('firstImageLabel');
 var secondImageLabel = document.getElementById('secondImageLabel');
 var thirdImageLabel = document.getElementById('thirdImageLabel');
+
+// constructor for our Product
+function Product(picture, name){
+  this.picture=picture;
+  this.name=name;
+  this.timesDisplayed=0;
+  this.timesSelected=0;
+  productList.push(this);
+}
 
 // make a place to store potential products to show
 // try and get the json for our products from local storage
@@ -55,26 +55,30 @@ var lastProducts = [];
 var firstProduct;
 var secondProduct;
 var thirdProduct;
-var showCount = 0;
+var numberOfTimesVoted = 0;
 var votesUntilShowResults = 25;
+var numberOfProductsShown = 3;
 
 function showNewProducts() {
   // this runs after we tally a vote, so we should persist that product to local storage
   window.localStorage.setItem('productList', JSON.stringify(productList));
 
   // see if the user has voted enough
-  if(showCount === votesUntilShowResults) {
+  if(numberOfTimesVoted === votesUntilShowResults) {
     // re-populate the product list so we can show all the products
     for(var i=0; i < lastProducts.length; i++) {
       productList.push(lastProducts[i]);
     }
-   
+
+    // this makes sure at the end of a survey we have everything persisted
+    window.localStorage.setItem('productList', JSON.stringify(productList));
+
     renderResults();
     return;
   }
 
   // If the user is on their 2nd vote, we need to add the 1st products displayed back into the list of available products
-  if(lastProducts.length > 3) {
+  if(lastProducts.length > numberOfProductsShown) {
     productList.push(lastProducts.shift());
     productList.push(lastProducts.shift());
     productList.push(lastProducts.shift());
@@ -111,30 +115,10 @@ function showNewProducts() {
   lastProducts.push(secondProduct);
   lastProducts.push(thirdProduct);
 
-  showCount++;
+  numberOfTimesVoted++;
 }
 
-// Make our images clickable and register the correct vote for each product shown
-firstImage.addEventListener('click', function() {
-  firstProduct.timesSelected++;
-  showNewProducts();
-});
-
-secondImage.addEventListener('click', function() {
-  secondProduct.timesSelected++;
-  showNewProducts();
-});
-
-thirdImage.addEventListener('click', function() {
-  thirdProduct.timesSelected++;
-  showNewProducts();
-});
-
-
 function renderResults() {
-  // this makes sure at the end of a survey we have everything persisted
-  window.localStorage.setItem('productList', JSON.stringify(productList));
-
   // clear all items being shown
   document.getElementById('images').innerHTML = '';
   var results = document.getElementById('results');
@@ -180,5 +164,20 @@ function renderChart() {
   });
 }
 
+// Make our images clickable and register the correct vote for each product shown
+firstImage.addEventListener('click', function() {
+  firstProduct.timesSelected++;
+  showNewProducts();
+});
+
+secondImage.addEventListener('click', function() {
+  secondProduct.timesSelected++;
+  showNewProducts();
+});
+
+thirdImage.addEventListener('click', function() {
+  thirdProduct.timesSelected++;
+  showNewProducts();
+});
 
 showNewProducts();
