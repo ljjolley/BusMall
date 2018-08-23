@@ -8,7 +8,6 @@ var thirdImage = document.getElementById('thirdImage');
 var firstImageLabel = document.getElementById('firstImageLabel');
 var secondImageLabel = document.getElementById('secondImageLabel');
 var thirdImageLabel = document.getElementById('thirdImageLabel');
-
 // make a place to store potential products to show
 var productList=[];
 
