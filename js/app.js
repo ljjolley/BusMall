@@ -53,7 +53,7 @@ var firstProduct;
 var secondProduct;
 var thirdProduct;
 var showCount = 0;
-var votesUntilShowResults = 2;
+var votesUntilShowResults = 25;
 
 function showNewProducts() {
   window.localStorage.setItem('productList', JSON.stringify(productList));
