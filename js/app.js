@@ -49,10 +49,11 @@ var firstProduct;
 var secondProduct;
 var thirdProduct;
 var showCount = 0;
+var votesUntilShowResults = 25;
 
 function showNewProducts() {
   // see if the user has voted enough
-  if(showCount === 25) {
+  if(showCount === votesUntilShowResults) {
     // re-populate the product list so we can show all the products
     for(var i=0; i < lastProducts.length; i++) {
       productList.push(lastProducts[i]);
@@ -131,6 +132,34 @@ function renderResults() {
     li.innerHTML = productList[i].timesSelected + ' votes for the ' + productList[i].name;
     results.appendChild(li);
   }
+
+  renderChart();
 }
 
+function renderChart() {
+  var resultsGraph = document.getElementById('resultsGraph').getContext('2d');
+  var chartLabels = [];
+  var chartData = [];
+
+  for(var i = 0; i < productList.length; i++) {
+    chartLabels.push(productList[i].name);
+    chartData.push(productList[i].timesSelected);
+  }
+
+  new Chart(resultsGraph, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Product vote totals',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: chartData,
+      }]
+    },
+  });
+}
 showNewProducts();
